@@ -14,7 +14,7 @@
     <header class="site-header">
         <div class="wrap header-inner">
             <a href="{% url 'home' %}" class="brand">
-                <span class="brand-mark">●</span> JENI MOBILES
+                <img src="{% static 'logo.svg' %}" alt="JENI MOBILES" style="height:36px; vertical-align:middle;">
             </a>
             <form class="search-form" action="{% url 'product_list' %}" method="get">
                 <input type="text" name="q" placeholder="Search phones, brands…" value="{{ request.GET.q|default:'' }}">
