@@ -1,0 +1,17 @@
+{% extends 'shop/base.html' %}
+{% block title %}Log in — JENI MOBILES{% endblock %}
+{% block content %}
+<div class="section-title"><h2>Log in</h2></div>
+<div class="form-card">
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% for error in field.errors %}<p style="color:#FF6B6B; font-size:0.85rem;">{{ error }}</p>{% endfor %}
+        {% endfor %}
+        <button type="submit" class="btn btn-primary" style="width:100%;">Log in</button>
+    </form>
+    <p style="margin-top:16px; color:var(--ink-dim);">No account? <a href="{% url 'signup' %}" style="color:var(--cyan);">Sign up</a></p>
+</div>
+{% endblock %}

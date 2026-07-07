@@ -1,0 +1,22 @@
+<div class="product-card">
+    <a href="{{ product.get_absolute_url }}">
+        <div class="product-thumb">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% else %}
+                <span class="placeholder">📱</span>
+            {% endif %}
+        </div>
+    </a>
+    <div class="product-meta">{{ product.brand.name|default:"" }}{% if product.ram %} · {{ product.ram }}/{{ product.storage }}{% endif %}</div>
+    <h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
+    <div class="price-row">
+        <span class="price">₹{{ product.current_price }}</span>
+        {% if product.discount_price %}
+            <span class="price-old">₹{{ product.price }}</span>
+            <span class="badge-sale">-{{ product.discount_percent }}%</span>
+        {% endif %}
+        {% if not product.in_stock %}<span class="badge-out">Out of stock</span>{% endif %}
+    </div>
+    <a href="{{ product.get_absolute_url }}" class="btn btn-outline">View details</a>
+</div>

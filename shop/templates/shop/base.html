@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}JENI — Mobile Shop{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'shop/css/style.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrap header-inner">
+            <a href="{% url 'home' %}" class="brand">
+                <span class="brand-mark">●</span> JENI MOBILES
+            </a>
+            <form class="search-form" action="{% url 'product_list' %}" method="get">
+                <input type="text" name="q" placeholder="Search phones, brands…" value="{{ request.GET.q|default:'' }}">
+                <button type="submit" aria-label="Search">⌕</button>
+            </form>
+            <nav class="main-nav">
+                <a href="{% url 'product_list' %}">Shop</a>
+                <a href="{% url 'cart_detail' %}" class="cart-link">
+                    Cart
+                    {% if cart_item_count %}<span class="cart-badge">{{ cart_item_count }}</span>{% endif %}
+                </a>
+                {% if user.is_authenticated %}
+                    <span class="hello">Hi, {{ user.username }}</span>
+                    <form action="{% url 'logout' %}" method="post" class="inline-form">
+                        {% csrf_token %}
+                        <button type="submit" class="link-btn">Log out</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}">Log in</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    {% if messages %}
+        <div class="wrap">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <main class="wrap page-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap footer-inner">
+            <div>
+                <span class="brand-mark">●</span> JENI MOBILES
+                <p>Your neighborhood mobile shop — real phones, real people, real fast delivery.</p>
+            </div>
+            <div>
+                <h4>Shop</h4>
+                <a href="{% url 'product_list' %}">All phones</a>
+                <a href="{% url 'cart_detail' %}">Your cart</a>
+            </div>
+            <div>
+                <h4>Store</h4>
+                <p>sathankulam, Tamil Nadu</p>
+                <p>Mon–Sat, 10am – 8pm</p>
+            </div>
+        </div>
+        <p class="copyright">© {% now "Y" %} JENI Mobile Shop. Built with Django.</p>
+    </footer>
+</body>
+</html>

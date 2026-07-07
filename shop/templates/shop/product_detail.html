@@ -1,0 +1,59 @@
+{% extends 'shop/base.html' %}
+{% block title %}{{ product.name }} — NovaCell{% endblock %}
+{% block content %}
+
+<div class="detail-layout">
+    <div class="detail-thumb">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% else %}
+            <span class="placeholder" style="font-size:4rem;">📱</span>
+        {% endif %}
+    </div>
+    <div class="detail-info">
+        <div class="product-meta">{{ product.brand.name|default:"" }} · {{ product.category.name|default:"" }}</div>
+        <h1>{{ product.name }}</h1>
+
+        <div class="detail-price">
+            ₹{{ product.current_price }}
+            {% if product.discount_price %}
+                <span class="price-old" style="font-size:1.1rem;">₹{{ product.price }}</span>
+                <span class="badge-sale">-{{ product.discount_percent }}%</span>
+            {% endif %}
+        </div>
+
+        {% if product.in_stock %}
+            <p style="color:#4CD97B;">In stock ({{ product.stock }} available)</p>
+        {% else %}
+            <p style="color:#FF6B6B;">Out of stock</p>
+        {% endif %}
+
+        <p>{{ product.description }}</p>
+
+        <table class="spec-table">
+            {% if product.ram %}<tr><td>RAM</td><td>{{ product.ram }}</td></tr>{% endif %}
+            {% if product.storage %}<tr><td>Storage</td><td>{{ product.storage }}</td></tr>{% endif %}
+            {% if product.color %}<tr><td>Color</td><td>{{ product.color }}</td></tr>{% endif %}
+            <tr><td>Brand</td><td>{{ product.brand.name|default:"—" }}</td></tr>
+        </table>
+
+        {% if product.in_stock %}
+        <form class="qty-form" action="{% url 'cart_add' product.id %}" method="post">
+            {% csrf_token %}
+            <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}">
+            <button type="submit" class="btn btn-primary">Add to cart</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+{% if related %}
+<div class="section-title"><h2>You might also like</h2></div>
+<div class="product-grid">
+    {% for product in related %}
+        {% include 'shop/_product_card.html' %}
+    {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

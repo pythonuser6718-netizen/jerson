@@ -1,0 +1,35 @@
+{% extends 'shop/base.html' %}
+{% block title %}Checkout — NovaCell{% endblock %}
+{% block content %}
+
+<div class="section-title"><h2>Checkout</h2></div>
+
+<div class="checkout-layout">
+    <div class="form-card">
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% for error in field.errors %}<p style="color:#FF6B6B; font-size:0.85rem; margin-top:-12px;">{{ error }}</p>{% endfor %}
+            {% endfor %}
+            <button type="submit" class="btn btn-primary" style="width:100%;">Place order</button>
+        </form>
+    </div>
+
+    <div class="order-review">
+        <h3 style="margin-top:0;">Order summary</h3>
+        {% for item in cart %}
+            <div class="row">
+                <span>{{ item.product.name }} × {{ item.quantity }}</span>
+                <span>₹{{ item.total_price }}</span>
+            </div>
+        {% endfor %}
+        <div class="row" style="border:none; font-weight:700; color: var(--cyan); font-size:1.1rem;">
+            <span>Total</span>
+            <span>₹{{ cart.get_total_price }}</span>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

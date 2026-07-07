@@ -1,0 +1,46 @@
+{% extends 'shop/base.html' %}
+{% block content %}
+
+<section class="hero">
+    <div class="hero-text">
+        <span class="eyebrow">New arrivals weekly</span>
+        <h1>Find your next phone, without the guesswork.</h1>
+        <p>Genuine devices, honest prices, and a shop that actually answers the phone. Browse the latest releases or grab a deal on last season's flagship.</p>
+        <a href="{% url 'product_list' %}" class="btn btn-primary">Browse all phones</a>
+    </div>
+    <div class="hero-visual"></div>
+</section>
+
+{% if categories %}
+<div class="chip-row">
+    {% for cat in categories %}
+        <a href="{% url 'product_list' %}?category={{ cat.slug }}" class="chip">{{ cat.name }}</a>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if featured %}
+<div class="section-title">
+    <h2>Featured phones</h2>
+    <a href="{% url 'product_list' %}">See all →</a>
+</div>
+<div class="product-grid">
+    {% for product in featured %}
+        {% include 'shop/_product_card.html' %}
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="section-title">
+    <h2>Just landed</h2>
+    <a href="{% url 'product_list' %}?sort=newest">See all →</a>
+</div>
+<div class="product-grid">
+    {% for product in latest %}
+        {% include 'shop/_product_card.html' %}
+    {% empty %}
+        <p>No products yet — add some from the Django admin.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

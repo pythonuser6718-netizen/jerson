@@ -1,0 +1,69 @@
+{% extends 'shop/base.html' %}
+{% block title %}Shop phones — NovaCell{% endblock %}
+{% block content %}
+
+<div class="section-title">
+    <h2>{% if query %}Results for "{{ query }}"{% else %}All phones{% endif %}</h2>
+</div>
+
+<div class="shop-layout">
+    <aside class="filter-panel">
+        <h4>Category</h4>
+        <ul>
+            <li><a href="?{% if query %}q={{ query }}&{% endif %}" class="{% if not selected_category %}active{% endif %}">All</a></li>
+            {% for cat in categories %}
+                <li><a href="?category={{ cat.slug }}{% if query %}&q={{ query }}{% endif %}" class="{% if selected_category == cat.slug %}active{% endif %}">{{ cat.name }}</a></li>
+            {% endfor %}
+        </ul>
+        {% if brands %}
+        <h4>Brand</h4>
+        <ul>
+            <li><a href="?{% if query %}q={{ query }}&{% endif %}" class="{% if not selected_brand %}active{% endif %}">All</a></li>
+            {% for brand in brands %}
+                <li><a href="?brand={{ brand.id }}{% if query %}&q={{ query }}{% endif %}" class="{% if selected_brand == brand.id|stringformat:'s' %}active{% endif %}">{{ brand.name }}</a></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </aside>
+
+    <div>
+        <div class="sort-bar">
+            <form method="get">
+                {% if query %}<input type="hidden" name="q" value="{{ query }}">{% endif %}
+                {% if selected_category %}<input type="hidden" name="category" value="{{ selected_category }}">{% endif %}
+                {% if selected_brand %}<input type="hidden" name="brand" value="{{ selected_brand }}">{% endif %}
+                <select name="sort" onchange="this.form.submit()">
+                    <option value="">Sort by</option>
+                    <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest</option>
+                    <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+                    <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+                </select>
+            </form>
+        </div>
+
+        <div class="product-grid">
+            {% for product in page_obj %}
+                {% include 'shop/_product_card.html' %}
+            {% empty %}
+                <div class="empty-state">
+                    <h2>No phones found</h2>
+                    <p>Try a different search or clear your filters.</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if page_obj.has_other_pages %}
+        <div class="chip-row">
+            {% if page_obj.has_previous %}
+                <a class="chip" href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">← Prev</a>
+            {% endif %}
+            <span class="chip">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a class="chip" href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}">Next →</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'shop/base.html' %}
+{% block title %}Sign up — NovaCell{% endblock %}
+{% block content %}
+<div class="section-title"><h2>Create an account</h2></div>
+<div class="form-card">
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% for error in field.errors %}<p style="color:#FF6B6B; font-size:0.85rem;">{{ error }}</p>{% endfor %}
+            {% if field.help_text %}<p style="color:var(--ink-dim); font-size:0.78rem; margin-top:-12px;">{{ field.help_text }}</p>{% endif %}
+        {% endfor %}
+        <button type="submit" class="btn btn-primary" style="width:100%;">Sign up</button>
+    </form>
+    <p style="margin-top:16px; color:var(--ink-dim);">Already have an account? <a href="{% url 'login' %}" style="color:var(--cyan);">Log in</a></p>
+</div>
+{% endblock %}
