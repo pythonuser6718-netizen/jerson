@@ -31,6 +31,20 @@
 </div>
 {% endif %}
 
+{% if latest %}
+<section style="display:flex; align-items:center; gap:2rem; background:linear-gradient(135deg,#1e293b,#0f172a); border-radius:16px; padding:2rem; margin:2rem 0; flex-wrap:wrap;">
+    <div style="flex:1; min-width:250px;">
+        <img src="{{ latest.0.image.url }}" alt="{{ latest.0.name }}" style="width:100%; max-width:280px; border-radius:12px; display:block; margin:0 auto;">
+    </div>
+    <div style="flex:1; min-width:250px;">
+        <span class="eyebrow">JUST DROPPED</span>
+        <h2 style="margin:0.5rem 0; font-size:1.8rem;">{{ latest.0.name }} has arrived</h2>
+        <p style="opacity:0.8;">Be the first to grab the newest addition to our lineup. Limited stock available.</p>
+        <a href="{% url 'product_detail' latest.0.slug %}" class="btn btn-primary">Shop now</a>
+    </div>
+</section>
+{% endif %}
+
 <div class="section-title">
     <h2>Just landed</h2>
     <a href="{% url 'product_list' %}?sort=newest">See all →</a>
