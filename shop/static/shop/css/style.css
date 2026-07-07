@@ -468,3 +468,13 @@ h1, h2, h3 {
         transform: translateY(0);
     }
 }
+
+.search-form input {
+    transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.search-form input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(56,189,248,0.35);
+    border-color: #38bdf8;
+}
